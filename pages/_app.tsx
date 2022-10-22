@@ -1,8 +1,22 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import "../styles/globals.css";
+import type { AppProps } from "next/app";
+import { createWeb3ReactRoot, Web3ReactProvider } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+const Web3ProviderNetwork = createWeb3ReactRoot("NETWORK");
+
+function getLibrary(provider: any) {
+  const library = new Web3Provider(provider);
+  // library.pollingInterval = 5000
+  return library;
 }
 
-export default MyApp
+function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <Component {...pageProps} />
+    </Web3ReactProvider>
+  );
+}
+
+export default MyApp;
